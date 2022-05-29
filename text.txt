@@ -1,0 +1,46 @@
+1)java jdk download and install
+2)jdk /bin cmd open location
+keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+3)ENTER PASSWORD 
+ENTER REPASSWORD
+4)Y
+5)Place the my-upload-key.keystore file under the android/app
+6)Edit the file ~/.app/gradle.properties or android/gradle.properties
+MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore
+MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
+MYAPP_UPLOAD_STORE_PASSWORD=PASSWORD
+MYAPP_UPLOAD_KEY_PASSWORD=PASSWORD
+
+7)android/app/build.gradle:
+ signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
+
+8) signingConfig signingConfigs.release
+9)cd android
+./gradlew bundleRelease
+10)npx react-native run-android --variant=release
+
+
+
+
+
+
+this was long method..........
+
+Now... this is short method
+
+
+
+step:1  add assets folder in andriod >app 
+step : 2     "clear": "cd android && gradlew clean && cd ../",
+
+"prebuild": "npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+
+  "build": "cd android && gradlew assembleDebug && cd ../",
